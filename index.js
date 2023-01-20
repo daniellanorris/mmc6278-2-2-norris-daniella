@@ -1,8 +1,8 @@
 const { program } = require("commander");
 const fs = require("fs/promises");
 const chalk = require("chalk");
-const { doesNotMatch } = require("assert");
-const { pipeline } = require("stream");
+// const { doesNotMatch } = require("assert");
+// const { pipeline } = require("stream");
 const QUOTE_FILE = "quotes.txt";
 
 program
@@ -37,7 +37,6 @@ program
   .description("adds a quote to the quote file")
   .action(async (quote, author) => {
     try {
-      // const joinedLine = quoteAuthor.join("\n")
       if (!author) {
         const anonymous = "Anonymous"
         const anonAuthor = fs.appendFile(QUOTE_FILE, ["\n" + quote + "\|" + anonymous], `utf-8`)
@@ -52,14 +51,6 @@ program
     } catch (err) {
       console.log(err)
     }
-    // TODO: Add the quote and author to the quotes.txt file
-    // If no author is provided,
-    // save the author as "Anonymous".
-    // After the quote/author is saved,
-    // alert the user that the quote was added.
-    // You may style the text with chalk as you wish
-    // HINT: You can store both author and quote on the same line using
-    // a separator like pipe | and then using .split() when retrieving
   });
 
 program.parse();
