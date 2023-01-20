@@ -9,7 +9,6 @@ For this assignment, you will create a command line application using the NodeJS
 
 &nbsp;
 ## Setup
-
 Copy the starter files inside of `unsolved` into the root directory of your GitHub repository.
 
 Ensure you include a `.gitignore` file in your repo that includes at minimum:

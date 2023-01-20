@@ -1,6 +1,8 @@
 const { program } = require("commander");
 const fs = require("fs/promises");
 const chalk = require("chalk");
+const { doesNotMatch } = require("assert");
+const { pipeline } = require("stream");
 const QUOTE_FILE = "quotes.txt";
 
 program
@@ -12,43 +14,44 @@ program
   .command("getQuote")
   .description("Retrieves a random quote")
   .action(async () => {
-    try{
-      var text = await fs.readFile(QUOTE_FILE, `utf-8`) 
+    try {
+      var text = await fs.readFile(QUOTE_FILE,`utf-8`)
       console.log(text)
-
-      const line = text.split("\n")
-      console.log(line)
-
-      const randomQuote = line[Math.floor(Math.random() * line.length)]
-
-      const dataBreak = line.split("\\|")
-      console.log(dataBreak)
-      console.log(chalk.blue.bgYellowBright(randomQuote))
-    } catch(err) { 
+      line = (text) =>
+        text
+        .split(`\n`);
+      const randomLine = line[Math.floor(Math.random() * line.length)]
+      var randomQuote = (randomLine) =>
+      randomLine
+      .split(`\|`)
+      [2];
+      console.log(chalk.blue.bgYellowBright(randomLine[randomQuote]))
+    } catch (err) {
       console.log(err)
     }
   });
 
 program
-  
-    .command("addQuote <quote> [author]")
-    .description("adds a quote to the quote file")
-    .action(async (quote, author) => {
-      try{
-       const quoteAuthor = await fs.writeFile(QUOTE_FILE, `utf-8`, [quote, author])
-      // const joinedLine = quoteAuthor.join("\n")
-      if(!author) {
-        const anonymous = `Anonymous`
-        fs.writeFile(QUOTE_FILE, `utf-8`, [quote, anonymous])
-        console.log(chalk.redBright.bgGrey(`quote was added`))
-      }
-       const joinedDataAuth = quoteAuthor.join("\\|")
-        console.log(joinedDataAuth)
-        console.log(chalk.redBright.bgGrey(`quote was added`))
 
-      } catch(err) {
-        console.log(err)
+  .command("addQuote <quote> [author]")
+  .description("adds a quote to the quote file")
+  .action(async (quote, author) => {
+    try {
+      // const joinedLine = quoteAuthor.join("\n")
+      if (!author) {
+        const anonymous = "Anonymous"
+        const anonAuthor = fs.appendFile(QUOTE_FILE, ["\n" + quote + "\|" + anonymous], `utf-8`)
+        console.log(anonAuthor)
+        console.log(chalk.redBright.bgGrey(`quote was added`))
+      } else if(author) {
+      const quoteAuthor = await fs.appendFile(QUOTE_FILE, ["\n" + quote + "\|" + author], `utf-8`)
+      console.log(quoteAuthor)
+      console.log(chalk.redBright.bgGrey(`quote was added`))
       }
+
+    } catch (err) {
+      console.log(err)
+    }
     // TODO: Add the quote and author to the quotes.txt file
     // If no author is provided,
     // save the author as "Anonymous".
