@@ -13,11 +13,14 @@ program
   .description("Retrieves a random quote")
   .action(async () => {
     try{
-      var text = fs.readFile(QUOTE_FILE, `utf-8`) 
+      var text = await fs.readFile(QUOTE_FILE, `utf-8`) 
       console.log(text)
+
       const line = text.split("\n")
       console.log(line)
+
       const randomQuote = line[Math.floor(Math.random() * line.length)]
+
       const dataBreak = line.split("\\|")
       console.log(dataBreak)
       console.log(chalk.blue.bgYellowBright(randomQuote))
@@ -32,16 +35,17 @@ program
     .description("adds a quote to the quote file")
     .action(async (quote, author) => {
       try{
-       const quoteAuthor = fs.writeFile(QUOTE_FILE, `utf-8`, [quote, author])
+       const quoteAuthor = await fs.writeFile(QUOTE_FILE, `utf-8`, [quote, author])
       // const joinedLine = quoteAuthor.join("\n")
+      if(!author) {
+        const anonymous = `Anonymous`
+        fs.writeFile(QUOTE_FILE, `utf-8`, [quote, anonymous])
+        console.log(chalk.redBright.bgGrey(`quote was added`))
+      }
        const joinedDataAuth = quoteAuthor.join("\\|")
         console.log(joinedDataAuth)
         console.log(chalk.redBright.bgGrey(`quote was added`))
-        if(!author) {
-          const anonymous = `Anonymous`
-          fs.writeFile(QUOTE_FILE, `utf-8`, [quote, anonymous])
-          console.log(chalk.redBright.bgGrey(`quote was added`))
-        }
+
       } catch(err) {
         console.log(err)
       }
