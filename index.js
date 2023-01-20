@@ -15,11 +15,11 @@ program
     try{
       var text = fs.readFile(QUOTE_FILE, `utf-8`) 
       console.log(text)
-      const dataBreak = text.split("\\|")
-      console.log(dataBreak)
-      const line = dataBreak.split("\n")
+      const line = text.split("\n")
       console.log(line)
       const randomQuote = line[Math.floor(Math.random() * line.length)]
+      const dataBreak = line.split("\\|")
+      console.log(dataBreak)
       console.log(chalk.blue.bgYellowBright(randomQuote))
     } catch(err) { 
       console.log(err)
@@ -33,8 +33,8 @@ program
     .action(async (quote, author) => {
       try{
        const quoteAuthor = fs.writeFile(QUOTE_FILE, `utf-8`, [quote, author])
-       const joinedLine = quoteAuthor.join("\n")
-       const joinedDataAuth = joinedLine.join("\\|")
+      // const joinedLine = quoteAuthor.join("\n")
+       const joinedDataAuth = quoteAuthor.join("\\|")
         console.log(joinedDataAuth)
         console.log(chalk.redBright.bgGrey(`quote was added`))
         if(!author) {
