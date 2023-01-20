@@ -13,9 +13,9 @@ program
   .description("Retrieves a random quote")
   .action(async () => {
     try{
-      fs.readFile(QUOTE_FILE, `utf-8`, data) 
-      console.log(data)
-      const dataBreak = data.split("\\|")
+      var text = fs.readFile(QUOTE_FILE, `utf-8`) 
+      console.log(text)
+      const dataBreak = text.split("\\|")
       console.log(dataBreak)
       const line = dataBreak.split("\n")
       console.log(line)
@@ -24,9 +24,6 @@ program
     } catch(err) { 
       console.log(err)
     }
-    // TODO: Pull a random quote from the quotes.txt file
-    // console log the quote and author
-    // You may style the text with chalk as you wish
   });
 
 program
