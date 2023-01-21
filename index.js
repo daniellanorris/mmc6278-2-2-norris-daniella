@@ -16,16 +16,14 @@ program
   .action(async () => {
     try {
       var text = await fs.readFile(QUOTE_FILE,`utf-8`)
-      console.log(text)
-      line = (text) =>
-        text
-        .split(`\n`);
+      const line = text.split(`\n`);
+      console.log(line)
       const randomLine = line[Math.floor(Math.random() * line.length)]
-      var randomQuote = (randomLine) =>
+      var randomQuote = 
       randomLine
-      .split(`\|`)
-      [2];
-      console.log(chalk.blue.bgYellowBright(randomLine[randomQuote]))
+      .split(`|`)
+      [0];
+      console.log(chalk.blue.bgYellowBright(randomQuote))
     } catch (err) {
       console.log(err)
     }
